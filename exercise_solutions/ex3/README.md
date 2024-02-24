@@ -153,3 +153,5 @@ GOGC=off GODEBUG=gctrace=1 ./ex3  0.05s user 0.04s system 94% cpu 0.099 total
 ```
 
 The CPU times are much faster. Pre-allocating the slice makes +GOGC=50+ faster than +GOGC=off+ when the slice grows over time. We have, at most, one GC cycle per run. If you know you are going to need a block of memory, it's best to allocate it at once and use it. If you can re-use it, all the better. That's the reason for the slice buffer pattern, also. 
+
+Since slice is implemented as struct of three fields: int for length, int for capacity and pointer to the block of memory, knowing the size of the slice allows Go to allocate the data(block of memory) to the stack, rather than escaping to heap.
